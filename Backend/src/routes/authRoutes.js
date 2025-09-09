@@ -2,7 +2,7 @@ import express from "express";
 import authController from "../controllers/authentication/authControllers.js";
 import Joi from "joi";
 import validator from "express-joi-validation";
-
+import verifyToken from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 //for validating the data sent to the routes we will use joi and express-joi-validation
@@ -44,4 +44,9 @@ router.post(
   authController.postRegister
 );
 router.post("/login", validate.body(loginSchema), authController.postLogin);
+
+router.get("/test", verifyToken, (req, res) => {
+  res.send("token works");
+});
+
 export default router;

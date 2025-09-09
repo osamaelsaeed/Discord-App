@@ -1,5 +1,7 @@
 import User from "../../models/userModel.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { ENV } from "../../config/env.js";
 const postRegister = async (req, res) => {
   try {
     //extracting the body variables
@@ -26,18 +28,28 @@ const postRegister = async (req, res) => {
     });
 
     //create the jwt token for the user to be able to access protected routes
-    const token = "JWT Token";
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        email: user.email,
+      },
+      ENV.TOKEN_SECRET_KEY,
+      {
+        //this token will expire in 24h
+        expiresIn: "24h",
+      }
+    );
 
     return res.status(201).json({
       userDetails: {
         email: user.email,
         username: user.username,
-        token,
+        token: token,
       },
     });
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
     console.log("error registering account", error);
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./pages/authPages/LoginPage/LoginPage";
 import RegisterPage from "./pages/authPages/Register/RegisterPage";
-import Dashboard from "./pages/Dashboard";
+import DashboardPage from "./pages/dashboard/DashboardPage";
 import { Toaster } from "react-hot-toast";
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>

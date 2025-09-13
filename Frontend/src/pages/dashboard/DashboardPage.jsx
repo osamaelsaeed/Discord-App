@@ -1,0 +1,23 @@
+import { styled } from "@mui/system";
+import SideBar from "./components/SideBar/SideBar";
+import FriendsSideBar from "./components/FriendsSideBar/FriendsSideBar";
+import Messenger from "./components/Messenger";
+import AppBar from "./components/AppBar";
+const Wrapper = styled("div")({
+  widt: "100%",
+  height: "100vh",
+  display: "flex",
+});
+
+const Dashboard = () => {
+  return (
+    <Wrapper>
+      <SideBar />
+      <FriendsSideBar />
+      <Messenger />
+      <AppBar />
+    </Wrapper>
+  );
+};
+
+export default Dashboard;

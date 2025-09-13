@@ -14,7 +14,7 @@ app.use(express.json()); // for JSON APIs
 app.use(express.urlencoded({ extended: true })); // for HTML forms
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ENV.CLIENT_PORT,
     credentials: true,
   })
 );

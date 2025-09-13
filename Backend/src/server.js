@@ -12,8 +12,12 @@ const app = express();
 
 app.use(express.json()); // for JSON APIs
 app.use(express.urlencoded({ extended: true })); // for HTML forms
-app.use(cors());
-
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 //register auth routes to the app
 app.use("/api/auth", authRoutes);
 

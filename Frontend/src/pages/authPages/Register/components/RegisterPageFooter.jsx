@@ -2,7 +2,7 @@ import CustomPrimaryButton from "../../../../components/shared/CustomPrimaryButt
 import RedirectInfo from "../../../../components/shared/RedirectInfo";
 import { useNavigate } from "react-router-dom";
 import { Tooltip } from "@mui/material";
-const RegisterPageFooter = ({ handleRegister, isFormValid }) => {
+const RegisterPageFooter = ({ handleRegister, isFormValid, loading }) => {
   const navigate = useNavigate();
   const handlePushToLoginPage = () => {
     navigate("/login");
@@ -26,6 +26,7 @@ const RegisterPageFooter = ({ handleRegister, isFormValid }) => {
             additionalStyles={{ marginTop: "30px" }}
             disabled={!isFormValid}
             onClick={handleRegister}
+            loading={loading}
           ></CustomPrimaryButton>
         </div>
       </Tooltip>

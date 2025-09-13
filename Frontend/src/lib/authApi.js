@@ -1,24 +1,13 @@
-import { axiosInstance } from "./axios";
+import axiosInstance from "./axios";
 
-//public routes
 export const login = async (data) => {
-  try {
-    return await axiosInstance.post("/auth/login", data);
-  } catch (exception) {
-    return {
-      error: true,
-      exception,
-    };
-  }
+  const response = await axiosInstance.post("/auth/login", data);
+  console.log(response);
+  return response.data;
 };
 
 export const register = async (data) => {
-  try {
-    return await axiosInstance.post("/auth/register", data);
-  } catch (exception) {
-    return {
-      error: true,
-      exception,
-    };
-  }
+  const response = await axiosInstance.post("/auth/register", data);
+  console.log(response);
+  return response.data;
 };

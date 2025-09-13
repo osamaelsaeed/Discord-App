@@ -1,9 +1,11 @@
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 const CustomPrimaryButton = ({
   label,
   additionalStyles,
   disabled,
   onClick,
+  loading,
 }) => {
   return (
     <Button
@@ -21,7 +23,7 @@ const CustomPrimaryButton = ({
       disabled={disabled}
       onClick={onClick}
     >
-      {label}
+      {loading ? <CircularProgress size={22} sx={{ color: "white" }} /> : label}
     </Button>
   );
 };

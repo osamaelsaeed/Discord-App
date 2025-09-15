@@ -1,4 +1,5 @@
 import { styled } from "@mui/material";
+import DropDownMenu from "./DropDownMenu";
 const MainContainer = styled("div")({
   position: "absolute",
   right: "0",
@@ -13,7 +14,11 @@ const MainContainer = styled("div")({
   padding: "0 15px",
 });
 const AppBar = () => {
-  return <MainContainer></MainContainer>;
+  return (
+    <MainContainer>
+      <DropDownMenu />
+    </MainContainer>
+  );
 };
 
 export default AppBar;

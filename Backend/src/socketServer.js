@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
 import authSocket from "./middlewares/authSocket.js";
+import { newConnectionHandler } from "./socketHandlers/newConnectionHandler.js";
+import { disconnectHandler } from "./socketHandlers/disconnectHandler.js";
 let io;
 
 export const initSocketServer = (server) => {
@@ -16,16 +18,11 @@ export const initSocketServer = (server) => {
     });
     io.on("connection", (socket) => {
       console.log("conn");
-
       console.log("User connected:", socket.id);
-
+      newConnectionHandler(socket, io);
       socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id);
+        disconnectHandler(socket);
       });
-    });
-    io.engine.on("connection_error", (err) => {
-      console.error("Engine.IO error:", err.code, err.message);
-      console.error(err.context);
     });
 
     console.log("Socket.IO server initialized");

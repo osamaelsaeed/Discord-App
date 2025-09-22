@@ -7,16 +7,22 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { DialogTitle, Typography } from "@mui/material";
 import Input from "../../../../components/shared/Input";
 import CustomPrimaryButton from "../../../../components/shared/CustomPrimaryButton";
-const AddFriendsDialog = ({
-  isDialogOpen,
-  closeDialogHandler,
-  sendFriendInvitaion = () => {},
-}) => {
+import { useDispatch } from "react-redux";
+import { sendFriendInvitation } from "../../../../features/friends/friendsActions";
+const AddFriendsDialog = ({ isDialogOpen, closeDialogHandler }) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
 
   const handleSendInvitation = () => {
-    //send friend req to the server
+    if (!isFormValid) return;
+
+    dispatch(
+      sendFriendInvitation({
+        data: { targetMailAddress: email },
+        closeDialogHandler: handleCloseDialog,
+      })
+    );
   };
 
   const handleCloseDialog = () => {
@@ -36,9 +42,7 @@ const AddFriendsDialog = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography>
-              Enter e-mail address of friend which you would like to invite
-            </Typography>
+            Enter e-mail address of friend which you would like to invite
           </DialogContentText>
           <Input
             label="Email"

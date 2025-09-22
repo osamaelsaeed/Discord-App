@@ -17,7 +17,6 @@ export const initSocketServer = (server) => {
       authSocket(socket, next);
     });
     io.on("connection", (socket) => {
-      console.log("conn");
       console.log("User connected:", socket.id);
       newConnectionHandler(socket, io);
       socket.on("disconnect", () => {

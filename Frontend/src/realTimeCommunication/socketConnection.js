@@ -14,15 +14,15 @@ export const connectWithSocketServer = (userDetails) => {
     });
 
     socket.on("connect", () => {
-      console.log("✅ Successfully connected to socket.io server");
+      console.log("Successfully connected to socket.io server");
       console.log("Socket ID:", socket.id);
     });
     socket.on("connect_error", (err) => {
-      console.error("❌ Socket connection error:", err.message);
+      console.error("Socket connection error:", err.message);
     });
 
     socket.on("disconnect", () => {
-      console.log("❌ Disconnected from server");
+      console.log("Disconnected from server");
     });
   }
   return socket;

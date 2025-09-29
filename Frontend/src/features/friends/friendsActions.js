@@ -1,28 +1,28 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../../lib/authApi";
+import toast from "react-hot-toast";
 
-// import {
-//   setFriends,
-//   setPendingFriendsInvitations,
-//   setOnlineUsers,
-// } from "./friendsSlice";
+import {
+  setFriends,
+  setPendingFriendsInvitations,
+  setOnlineUsers,
+} from "./friendsSlice";
 
 // --- Async Thunks ---
-
 export const sendFriendInvitation = createAsyncThunk(
   "friends/sendFriendInvitation",
-  async ({ data, closeDialogHandler }, { rejectWithValue }) => {
-    try {
-      const response = await api.sendFriendInvitaion(data);
+  async ({ data, closeDialogHandler }) => {
+    const response = await api.sendFriendInvitaion(data);
+    console.log(response); // should always be an object
+
+    if (response.success) {
+      toast.success(response.message);
       if (closeDialogHandler) closeDialogHandler();
-      return response;
-    } catch (error) {
-      return rejectWithValue({
-        message:
-          error.response?.data || error.message || "Something went wrong",
-        status: error.response?.status || null,
-      });
+    } else {
+      toast.error(response.message || "Something went wrong");
     }
+
+    return response;
   }
 );
 

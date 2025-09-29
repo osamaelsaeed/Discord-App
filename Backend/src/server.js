@@ -6,6 +6,7 @@ import http from "http";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import { initSocketServer } from "./socketServer.js";
+import friendInvitationRoutes from "./routes/friendInvitationRoutes.js";
 
 const PORT = ENV.PORT;
 const MONGO_URI = ENV.MONGO_URI;
@@ -21,6 +22,7 @@ app.use(
 );
 //register auth routes to the app
 app.use("/api/auth", authRoutes);
+app.use("/api/friend-invitation", friendInvitationRoutes);
 
 //customizing our server to gain more control to add websockets
 const server = http.createServer(app);

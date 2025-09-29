@@ -15,12 +15,21 @@ export const register = async (data) => {
 
 export const sendFriendInvitaion = async (data) => {
   try {
-    return await axiosInstance.post("/friend-invitation/invite", data);
+    const response = await axiosInstance.post(
+      "/friend-invitation/invite",
+      data
+    );
+    return response.data; // always return payload
   } catch (exception) {
     checkResponseCode(exception);
+
+    // normalize error to always include success + message
     return {
-      error: true,
-      exception,
+      success: false,
+      message:
+        exception.response?.data?.message ||
+        exception.message ||
+        "Something went wrong",
     };
   }
 };

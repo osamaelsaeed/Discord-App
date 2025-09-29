@@ -3,6 +3,8 @@ import { ENV } from "../config/env.js";
 
 const verifyToken = (req, res, next) => {
   let token = req.headers["authorization"];
+  console.log(token);
+
   if (!token) {
     return res.status(403).send("a token is required for authentication");
   }
@@ -12,6 +14,7 @@ const verifyToken = (req, res, next) => {
     token = token.replace(/^Bearer\s+/, "");
     //decode the token using our secret
     const decoded = jwt.verify(token, ENV.TOKEN_SECRET_KEY);
+    console.log(decoded);
     //if error happened during the verify decoding it will go to catch block
     //if succeced the decoded pay load will include for example
     //     {

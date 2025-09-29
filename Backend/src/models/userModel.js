@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema(
         "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character",
       ],
     },
+    friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );

@@ -12,3 +12,14 @@ export const removeConnectedUser = (socketId) => {
     console.log("new connected users", connectedUsers);
   }
 };
+
+export const getActiveConnections = (userId) => {
+  const activeConnections = [];
+  connectedUsers.forEach(function (value, key) {
+    if (value.userId === userId) {
+      //key is the socket id we need to get all devices socket id for this user to emit event to all the devices
+      activeConnections.push(key);
+    }
+  });
+  return activeConnections;
+};

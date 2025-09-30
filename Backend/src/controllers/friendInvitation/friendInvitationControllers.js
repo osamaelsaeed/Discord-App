@@ -1,5 +1,6 @@
 import User from "../../models/userModel.js";
 import FriendInvitation from "../../models/friendInvitation.js";
+import { updateFriendsPendingInvitations } from "../../socketHandlers/updates/friends.js";
 export const postInvite = async (req, res) => {
   try {
     const { targetMailAddress } = req.body;
@@ -58,7 +59,8 @@ export const postInvite = async (req, res) => {
     });
 
     // if sent saved to db updated friends invitiaions should appear immediatly for both sender and reciver for online users
-
+    updateFriendsPendingInvitations(targetUser._id.toString());
+    //send pending invitations to the reciever with socket
     return res.status(200).json({
       success: true,
       message: "Invitation sent successfully!",

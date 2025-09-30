@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../../lib/authApi";
 import toast from "react-hot-toast";
 
-import {
-  setFriends,
-  setPendingFriendsInvitations,
-  setOnlineUsers,
-} from "./friendsSlice";
+// import {
+//   setFriends,
+//   setPendingFriendsInvitations,
+//   setOnlineUsers,
+// } from "./friendsSlice";
 
 // --- Async Thunks ---
 export const sendFriendInvitation = createAsyncThunk(

@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
-
+import { setPendingFriendsInvitations } from "../features/friends/friendsSlice";
+import store from "../store/store";
 let socket = null;
 
 export const connectWithSocketServer = (userDetails) => {
@@ -23,6 +24,12 @@ export const connectWithSocketServer = (userDetails) => {
 
     socket.on("disconnect", () => {
       console.log("Disconnected from server");
+    });
+
+    socket.on("friends-invitations", (data) => {
+      const { pendingInvitations } = data;
+      console.log("Received pending invitations:", pendingInvitations);
+      store.dispatch(setPendingFriendsInvitations(pendingInvitations));
     });
   }
   return socket;

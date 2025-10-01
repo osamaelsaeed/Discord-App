@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as api from "../../lib/authApi";
 import toast from "react-hot-toast";
 
-import {
-  setFriends,
-  setPendingFriendsInvitations,
-  setOnlineUsers,
-} from "./friendsSlice";
+// import {
+//   setFriends,
+//   setPendingFriendsInvitations,
+//   setOnlineUsers,
+// } from "./friendsSlice";
 
 // --- Async Thunks ---
 export const sendFriendInvitation = createAsyncThunk(
@@ -25,40 +25,70 @@ export const sendFriendInvitation = createAsyncThunk(
     return response;
   }
 );
+export const acceptFriendInvitation = createAsyncThunk(
+  "friends/acceptFriendInvitation",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.acceptFriendInvitation(data);
 
-// export const acceptFriendInvitation = createAsyncThunk(
-//   "friends/acceptFriendInvitation",
-//   async (data) => {
-//     const response = await api.acceptFriendInvitation(data);
+      if (response.error) {
+        toast.error(
+          response.exception?.response?.data || "Failed to accept invitation"
+        );
 
-//     if (response.error) {
-//       toast.error(
-//         response.exception?.response?.data || "Failed to accept invitation"
-//       );
-//     } else {
-//       toast.success("Invitation accepted!");
-//     }
+        // return clean error object
+        return rejectWithValue({
+          error: true,
+          message:
+            response.exception?.response?.data?.message ||
+            response.exception?.message ||
+            "Failed to accept invitation",
+        });
+      } else {
+        toast.success("Invitation accepted!");
+        return response.data; // ✅ only serializable
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+      return rejectWithValue({
+        error: true,
+        message: err.message,
+      });
+    }
+  }
+);
 
-//     return response;
-//   }
-// );
+export const rejectFriendInvitation = createAsyncThunk(
+  "friends/rejectFriendInvitation",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.rejectFriendInvitation(data);
 
-// export const rejectFriendInvitation = createAsyncThunk(
-//   "friends/rejectFriendInvitation",
-//   async (data) => {
-//     const response = await api.rejectFriendInvitation(data);
+      if (response.error) {
+        toast.error(
+          response.exception?.response?.data || "Failed to reject invitation"
+        );
 
-//     if (response.error) {
-//       toast.error(
-//         response.exception?.response?.data || "Failed to reject invitation"
-//       );
-//     } else {
-//       toast.success("Invitation rejected!");
-//     }
-
-//     return response;
-//   }
-// );
+        return rejectWithValue({
+          error: true,
+          message:
+            response.exception?.response?.data?.message ||
+            response.exception?.message ||
+            "Failed to reject invitation",
+        });
+      } else {
+        toast.success("Invitation rejected!");
+        return response.data;
+      }
+    } catch (err) {
+      toast.error("Something went wrong");
+      return rejectWithValue({
+        error: true,
+        message: err.message,
+      });
+    }
+  }
+);
 
 // export const fetchFriends = () => async (dispatch) => {
 //   const response = await api.getFriends();

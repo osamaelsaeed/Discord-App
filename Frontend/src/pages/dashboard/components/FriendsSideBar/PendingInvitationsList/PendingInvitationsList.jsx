@@ -1,22 +1,8 @@
 import { styled } from "@mui/material";
 import PendingInvitationsListItem from "./PendingInvitationsListItem";
-const DUMMY_INVITATIONS = [
-  {
-    _id: 1,
-    senderId: {
-      username: "Tarek",
-      email: "Tm354@gmail.com",
-    },
-  },
-  {
-    _id: 2,
-    senderId: {
-      username: "Ramy",
-      email: "Rm453@gmail.com",
-    },
-  },
-];
-
+import { useSelector } from "react-redux";
+// import { fetchPendingFriendsInvitations } from "../../features/friends/friendsActions";
+// import { useEffect } from "react";
 const MainContainer = styled("div")({
   width: "100%",
   height: "22%",
@@ -26,9 +12,17 @@ const MainContainer = styled("div")({
   overflow: "auto",
 });
 const PendingInvitationsList = () => {
+  // const dispatch = useDispatch();
+  const pendingInvitations = useSelector(
+    (state) => state.friends.pendingFriendsInvitations
+  );
+
+  // useEffect(() => {
+  //   dispatch(fetchPendingFriendsInvitations()); // ✅ fetch from backend
+  // }, [dispatch]);
   return (
     <MainContainer>
-      {DUMMY_INVITATIONS.map((f) => (
+      {pendingInvitations.map((f) => (
         <PendingInvitationsListItem
           key={f._id}
           id={f._id}

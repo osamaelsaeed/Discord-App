@@ -31,3 +31,41 @@ export const updateFriendsPendingInvitations = async (userId) => {
     console.log(error);
   }
 };
+export const updateFriends = async (userId) => {
+  try {
+    // find active connections of specific id (online users)
+    const receiverList = getActiveConnections(userId);
+
+    if (receiverList.length > 0) {
+      const user = await User.findById(userId, { _id: 1, friends: 1 }).populate(
+        "friends",
+        "_id username email"
+      );
+
+      if (user) {
+        const friendsList = user.friends.map((f) => {
+          return {
+            id: f._id,
+            email: f.email,
+            username: f.username,
+          };
+        });
+
+        // get io server instance
+        const io = getIO();
+
+        receiverList.forEach((receiverSocketId) => {
+          io.to(receiverSocketId).emit(
+            "friends-list",
+            {
+              friends: friendsList ? friendsList : [],
+            },
+            console.log("friend list socket emitted")
+          );
+        });
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

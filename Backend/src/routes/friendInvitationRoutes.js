@@ -10,6 +10,10 @@ const postInvitationSchema = Joi.object({
   targetMailAddress: Joi.string().email(),
 });
 
+const inviteDecisionSchema = Joi.object({
+  id: Joi.string().required(),
+});
+
 const validate = validator.createValidator({});
 
 router.post(
@@ -17,6 +21,20 @@ router.post(
   verifyToken,
   validate.body(postInvitationSchema),
   friendInvitationControllers.postInvite
+);
+
+router.post(
+  "/accept",
+  verifyToken,
+  validate.body(inviteDecisionSchema),
+  friendInvitationControllers.postAccept
+);
+
+router.post(
+  "/reject",
+  verifyToken,
+  validate.body(inviteDecisionSchema),
+  friendInvitationControllers.postReject
 );
 
 export default router;

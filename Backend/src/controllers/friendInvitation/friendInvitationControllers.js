@@ -1,6 +1,9 @@
 import User from "../../models/userModel.js";
 import FriendInvitation from "../../models/friendInvitation.js";
-import { updateFriendsPendingInvitations } from "../../socketHandlers/updates/friends.js";
+import {
+  updateFriendsPendingInvitations,
+  updateFriends,
+} from "../../socketHandlers/updates/friends.js";
 export const postInvite = async (req, res) => {
   try {
     const { targetMailAddress } = req.body;
@@ -67,6 +70,82 @@ export const postInvite = async (req, res) => {
     });
   } catch (error) {
     console.error("Invite error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong on the server",
+    });
+  }
+};
+
+export const postAccept = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const invitation = await FriendInvitation.findById(id);
+    if (!invitation) {
+      return res.status(404).json({
+        success: false,
+        message: `Invitation with id ${id} not found. Please check the id again!`,
+      });
+    }
+
+    const { senderId, receiverId } = invitation;
+
+    //add friends to both users
+    const senderUser = await User.findById(senderId);
+    senderUser.friends = [...senderUser.friends, receiverId];
+
+    const recieverUser = await User.findById(receiverId);
+    recieverUser.friends = [...recieverUser.friends, senderId];
+
+    await senderUser.save();
+    await recieverUser.save();
+
+    //delete invtitation
+    await FriendInvitation.findByIdAndDelete(id);
+
+    // update list of friends if the users are online
+    updateFriends(senderId.toString());
+    updateFriends(receiverId.toString());
+
+    // update list of pending invitaion of the reciever
+    updateFriendsPendingInvitations(receiverId.toString());
+
+    return res.status(200).json({
+      success: true,
+      message: "Invitation Accepted!",
+    });
+  } catch (error) {
+    console.error("Accept invitation error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong on the server",
+    });
+  }
+};
+
+export const postReject = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const { userId } = req.user;
+
+    //remove invitation from friend invitation collection
+    const invitationExists = await FriendInvitation.exists({ _id: id });
+    if (!invitationExists) {
+      return res.status(404).json({
+        success: false,
+        message: `Invitation with id ${id} not found. Please check the id again!`,
+      });
+    }
+
+    await FriendInvitation.findByIdAndDelete(id);
+    // update pending invitations
+    updateFriendsPendingInvitations(userId);
+    return res.status(200).json({
+      success: true,
+      message: "Invitation rejected!",
+    });
+  } catch (error) {
+    console.error("Reject invitation error:", error);
     res.status(500).json({
       success: false,
       message: "Something went wrong on the server",

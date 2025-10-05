@@ -1,5 +1,6 @@
 import { styled } from "@mui/material";
 import DropDownMenu from "./DropDownMenu";
+import ChoosenOptionLabel from "./ChoosenOptionLabel";
 const MainContainer = styled("div")({
   position: "absolute",
   right: "0",
@@ -16,6 +17,7 @@ const MainContainer = styled("div")({
 const AppBar = () => {
   return (
     <MainContainer>
+      <ChoosenOptionLabel />
       <DropDownMenu />
     </MainContainer>
   );

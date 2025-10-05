@@ -1,7 +1,7 @@
 import { styled } from "@mui/system";
 import SideBar from "./components/SideBar/SideBar";
 import FriendsSideBar from "./components/FriendsSideBar/FriendsSideBar";
-import Messenger from "./components/Messenger";
+import Messenger from "./components/Messenger/Messenger";
 import AppBar from "./components/AppBar/AppBar";
 import { connectWithSocketServer } from "../../realTimeCommunication/socketConnection";
 import { useEffect } from "react";

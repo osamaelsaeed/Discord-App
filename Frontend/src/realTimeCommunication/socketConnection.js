@@ -51,6 +51,16 @@ export const connectWithSocketServer = (userDetails) => {
   return socket;
 };
 
+export const sendDirectMessage = (data) => {
+  console.log(data, "data to server");
+  if (!socket) {
+    console.error("❌ Cannot send direct message — socket not connected yet");
+    return;
+  }
+
+  socket.emit("direct-message", data);
+};
+
 export const getSocket = () => {
   if (!socket)
     throw new Error(

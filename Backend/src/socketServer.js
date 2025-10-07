@@ -3,6 +3,7 @@ import authSocket from "./middlewares/authSocket.js";
 import { newConnectionHandler } from "./socketHandlers/newConnectionHandler.js";
 import { disconnectHandler } from "./socketHandlers/disconnectHandler.js";
 import { getOnlineUsers } from "./serverStore.js";
+import { directMessageHandler } from "./socketHandlers/directMessageHandler.js";
 let io;
 
 export const initSocketServer = (server) => {
@@ -27,6 +28,11 @@ export const initSocketServer = (server) => {
       console.log("User connected:", socket.id);
       newConnectionHandler(socket, io);
       emitOnlineUsers();
+
+      socket.on("direct-message", (data) => {
+        directMessageHandler(socket, data);
+      });
+
       socket.on("disconnect", () => {
         disconnectHandler(socket);
       });

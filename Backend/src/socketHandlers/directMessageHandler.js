@@ -3,15 +3,13 @@ import Conversation from "../models/conversation.js";
 import { updateChatHistory } from "./updates/chat.js";
 export const directMessageHandler = async (socket, data) => {
   try {
-    console.log("direct message event is being handled");
-
     const { userId } = socket.user;
     const { receiverUserId, content } = data;
 
     //create new message
     const message = await Message.create({
       content: content,
-      authorId: userId,
+      author: userId,
       date: new Date(),
       type: "DIRECT",
     });
@@ -34,7 +32,7 @@ export const directMessageHandler = async (socket, data) => {
       });
 
       //perform and update to sender and reciver if online
-      updateChatHistory(conversation._id.toString());
+      updateChatHistory(newConversation._id.toString());
     }
   } catch (error) {
     console.log(error);

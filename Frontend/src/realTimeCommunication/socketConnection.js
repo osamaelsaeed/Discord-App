@@ -5,13 +5,13 @@ import {
   setOnlineUsers,
 } from "../features/friends/friendsSlice";
 import store from "../store/store";
+import { updateDirectChatHistoryIfActive } from "../components/shared/utils/chat";
 let socket = null;
 
 export const connectWithSocketServer = (userDetails) => {
   const jwtToken = userDetails.token;
 
   if (!socket) {
-    console.log(jwtToken);
     socket = io("http://localhost:3000", {
       auth: {
         token: jwtToken,
@@ -47,6 +47,10 @@ export const connectWithSocketServer = (userDetails) => {
       const { onlineUsers } = data;
       store.dispatch(setOnlineUsers(onlineUsers));
     });
+
+    socket.on("direct-chat-history", (data) => {
+      updateDirectChatHistoryIfActive(data);
+    });
   }
   return socket;
 };
@@ -59,6 +63,10 @@ export const sendDirectMessage = (data) => {
   }
 
   socket.emit("direct-message", data);
+};
+
+export const getDirectChatHistory = (data) => {
+  socket.emit("direct-chat-history", data);
 };
 
 export const getSocket = () => {

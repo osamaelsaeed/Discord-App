@@ -10,7 +10,7 @@ export const updateChatHistory = async (
 ) => {
   const conversation = await Conversation.findById(conversationID).populate({
     path: "messages",
-    model: "Model",
+    model: "Message",
     populate: {
       path: "author",
       model: "User",

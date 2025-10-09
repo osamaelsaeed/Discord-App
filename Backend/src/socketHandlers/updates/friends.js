@@ -16,16 +16,11 @@ export const updateFriendsPendingInvitations = async (userId) => {
 
     //emit to all devices of the reciver
     const io = getIO();
-    console.log(io, "this is io");
 
     recieverList.forEach((recieverSocketId) => {
-      io.to(recieverSocketId).emit(
-        "friends-invitations",
-        {
-          pendingInvitations: pendingInvitations ? pendingInvitations : [],
-        },
-        console.log("runned")
-      );
+      io.to(recieverSocketId).emit("friends-invitations", {
+        pendingInvitations: pendingInvitations ? pendingInvitations : [],
+      });
     });
   } catch (error) {
     console.log(error);
@@ -55,13 +50,9 @@ export const updateFriends = async (userId) => {
         const io = getIO();
 
         receiverList.forEach((receiverSocketId) => {
-          io.to(receiverSocketId).emit(
-            "friends-list",
-            {
-              friends: friendsList ? friendsList : [],
-            },
-            console.log("friend list socket emitted")
-          );
+          io.to(receiverSocketId).emit("friends-list", {
+            friends: friendsList ? friendsList : [],
+          });
         });
       }
     }

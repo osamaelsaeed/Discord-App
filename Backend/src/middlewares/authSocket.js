@@ -3,7 +3,6 @@ import { ENV } from "../config/env.js";
 
 const verifyTokenSocket = (socket, next) => {
   const token = socket.handshake.auth?.token;
-  console.log("🔑 Incoming socket token:", token);
 
   if (!token) {
     console.error("❌ No token provided in handshake.auth");

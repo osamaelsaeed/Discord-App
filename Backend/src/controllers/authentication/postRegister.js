@@ -45,10 +45,10 @@ const postRegister = async (req, res) => {
         email: user.email,
         username: user.username,
         token: token,
+        _id: user._id,
       },
     });
   } catch (error) {
-    console.log("error registering account", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
